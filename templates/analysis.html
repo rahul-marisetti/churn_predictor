@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Churn Prediction</title>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            padding: 50px; 
+            background-color: lightblue;
+        }
+        h1 { font-size: 2.5em; color: #333; }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #333;
+        }
+        input {
+            padding: 10px;
+            width: 60%;
+            font-size: 1.1em;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button { 
+            padding: 15px 30px; 
+            font-size: 1.2em; 
+            margin-top: 30px; 
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF; 
+            color: white;
+            border-radius: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Enter Customer Data</h1>
+    <form action="/predict" method="POST">
+
+        <label>Credit Score:</label>
+        <input type="number" name="CreditScore" step="any" required>
+
+        <label>Geography (0=France, 1=Germany, 2=Spain):</label>
+        <input type="number" name="Geography" min="0" max="2" required>
+
+        <label>Gender (0=Female, 1=Male):</label>
+        <input type="number" name="Gender" min="0" max="1" required>
+
+        <label>Age:</label>
+        <input type="number" name="Age" required>
+
+        <label>Tenure:</label>
+        <input type="number" name="Tenure" required>
+
+        <label>Balance:</label>
+        <input type="number" name="Balance" step="any" required>
+
+        <label>Number of Products:</label>
+        <input type="number" name="NumOfProducts" required>
+
+        <label>Has Credit Card (1=Yes, 0=No):</label>
+        <input type="number" name="HasCrCard" min="0" max="1" required>
+
+        <label>Is Active Member (1=Yes, 0=No):</label>
+        <input type="number" name="IsActiveMember" min="0" max="1" required>
+
+        <label>Estimated Salary:</label>
+        <input type="number" name="EstimatedSalary" step="any" required>
+
+        <br>
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>
