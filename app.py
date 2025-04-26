@@ -59,7 +59,7 @@ def predict():
 
         return render_template(
             "result.html", 
-            prediction="Churn" if prediction == 1 else "No Churn",
+            prediction="Likely to churn" if prediction == 1 else "Not likely to Churn",
             top_factors=top_factors
         )
     except Exception as e:
