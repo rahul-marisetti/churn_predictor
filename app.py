@@ -11,16 +11,21 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template("index.html")  #index page
+    return render_template("index.html")
 
 @app.route('/analysis', methods=['GET'])
 def analysis():
-    return render_template("analysis.html")  #analysis page
+    return render_template("analysis.html")
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        #input
+        feature_names = [
+            "CreditScore", "Geography", "Gender", "Age", "Tenure", 
+            "Balance", "NumOfProducts", "HasCrCard", "IsActiveMember", 
+            "EstimatedSalary"
+        ]
+
         input_features = [
             float(request.form["CreditScore"]),
             int(request.form["Geography"]),
@@ -34,21 +39,31 @@ def predict():
             float(request.form["EstimatedSalary"])
         ]
 
-        #predict using the model
-        input_array = np.array(input_features).reshape(1, -1)
-        prediction = model.predict(input_array)[0]
+        prediction = model.predict([input_features])[0]
 
-        #prediction result
-        result = "Customer is likely to churn." if prediction == 1 else "Customer is likely to stay."
-        return redirect(url_for('result', prediction=result))
-    
+        # Try to extract feature importance or coefficients
+        importances = None
+        try:
+            importances = model.feature_importances_
+        except AttributeError:
+            try:
+                importances = model.coef_[0]
+            except AttributeError:
+                pass
+
+        # Determine top contributing factors
+        top_factors = []
+        if importances is not None:
+            top_indices = sorted(range(len(importances)), key=lambda i: abs(importances[i]), reverse=True)[:3]
+            top_factors = [(feature_names[i], round(importances[i], 4)) for i in top_indices]
+
+        return render_template(
+            "result.html", 
+            prediction="Churn" if prediction == 1 else "No Churn",
+            top_factors=top_factors
+        )
     except Exception as e:
-        return f"Error: {e}"
-
-@app.route('/result')
-def result():
-    prediction = request.args.get("prediction", "No prediction available.")
-    return render_template("result.html", result=prediction)
+        return f"An error occurred: {e}"
 
 if __name__ == "__main__":
     app.run(debug=True)

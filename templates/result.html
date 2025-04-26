@@ -2,26 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction Result</title>
     <style>
-        body {
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            padding: 100px 20px; 
             background-color: lightblue;
-            text-align: center;
-            padding: 50px;
-            font-family: Arial, sans-serif;
         }
-        h1 {
-            font-size: 2.5em;
-            color: #333;
+        h1 { 
+            font-size: 3em; 
+            color: #333; 
+            margin-bottom: 10px;
         }
-        p {
+        h3, h4 {
             font-size: 1.5em;
-            color: #555;
+            color: #333;
+            margin-top: 20px;
+        }
+        p, li {
+            font-size: 1.2em;
+            color: #444;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        a:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Prediction Result</h1>
-    <p>{{ result }}</p>
+    <h1>Customer Churn Prediction</h1>
+    <h3>Prediction Result: {{ prediction }}</h3>
+
+    {% if top_factors %}
+        <h4>Top Contributing Factors:</h4>
+        <ul>
+            {% for name, importance in top_factors %}
+                <li>{{ name }} (importance: {{ importance }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Model does not support feature importance.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">Go Back</a>
 </body>
 </html>
